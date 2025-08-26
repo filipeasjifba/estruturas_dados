@@ -1,0 +1,12 @@
+public class MainArrayStack {
+	public static void main(String args[]) {
+	ArrayStack stack = new ArrayStack(5);
+	stack.push("Instituto");
+	stack.push("Federal");
+	stack.push("da");
+	stack.push("Bahia");
+	String temp = (String) stack.peek();
+	String state = (String) stack.pop();
+	System.out.println((stack.print()))
+	}
+}

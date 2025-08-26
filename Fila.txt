@@ -1,0 +1,20 @@
+//Fila
+//Queue
+//FIFO = First in First Out
+public interface Queueable{
+C | enqueue //é tipo o push
+R | front //é tipo o peek
+U | updateFront updateRear
+D | dequeue //é tipo o pop
+
+
+
+void enqueue (Object data);
+Object dequeue ();
+Object front ();
+
+
+boolean isEmpty();
+boolean isFull();
+String print();
+}
