@@ -1,0 +1,23 @@
+public void enqueue(Object data);
+
+public Object dequeue(){
+	Object aux = null;
+	if (isEmpty()) {
+		System.err.println("Queue is empty");
+	} else {
+		aux = data[head];
+	}
+	}}
+	
+	@Override
+	String print(){
+		
+	}
+	
+BeginEnqueue
+EndEnqueue
+
+BeginUpdate
+EndUpdate
+
+printRearTo
