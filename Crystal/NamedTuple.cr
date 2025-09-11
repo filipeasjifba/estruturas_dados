@@ -1,4 +1,4 @@
-# Classe NamedTupleMetodos
+# Tupla nomeada (NamedTuple)
 
 class NamedTupleMetodos(T)
 
@@ -11,20 +11,19 @@ class NamedTupleMetodos(T)
     end
 
     def full?
-        @namedTuple.size>0
+        !empty?
     end
 
     def size
         @namedTuple.size
     end
 
-    def []()
+    def [](chave : Symbol)
+        @namedTuple[chave]
+    end
 end
 
 class Main
-
-tupla_nomeada = NamedTupleMetodos.new({nome: "Filipe", idade:30, ativo: false})
-
-puts tupla_nomeada.empty?
-
+    dados_climáticos = NamedTupleMetodos.new({city: "Vitória da Conquista", temperatura: 29.9, umidade: 70, velocidade_vento: 15.2})
+    puts "Condição do tempo em #{dados_climáticos[:city]}: \ntemperatura: #{dados_climáticos[:temperatura]}\numidade: #{dados_climáticos[:umidade]}\nvelocidade do vento: #{dados_climáticos[:velocidade_vento]}"
 end
