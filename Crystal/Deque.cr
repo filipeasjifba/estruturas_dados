@@ -1,30 +1,68 @@
-# Métodos
-def is_empty
-    @deque.to_a.empty?
-end
-
-# Double-Ended Queue ou deque é uma estrutura mutável
+# Fila dupla (Deque ou Double Ended Queue)
 
 require "deque"
+class MinhaDeque(T)
+  def initialize
+    @deque = Deque(T).new
+  end
 
-fila = Deque(Int32).new
-fila.push 10
-fila.push 20
-fila.unshift 5
+  def empty?
+    @deque.empty?
+  end
 
-ultimo = fila.to_a.first
-primeiro = fila.to_a.last
-fila.push 35
-fila.unshift 20
+  def push(value : T)
+    @deque.push(value)
+  end
 
-fila.each do |n|
-    puts n
-    end
+  def unshift(value : T)
+    @deque.unshift(value)
+  end
 
-puts fila
+  def pop
+    @deque.pop
+  end
 
-carro = Deque(String).new
-carro.push "fusca"
-carro.unshift "corola"
+  def shift
+    @deque.shift
+  end
 
-puts carro
+  def first
+    @deque.first
+  end
+
+  def last
+    @deque.last
+  end
+
+  def size
+    @deque.size
+  end
+
+  def to_s(io)
+    io << @deque.to_a
+  end
+end
+
+class Main
+    fila = MinhaDeque(Int32).new
+    fila.push 10
+    fila.push 20
+    fila.unshift 7
+
+    puts fila
+    puts "Primeiro: #{fila.first}"
+    puts "Último: #{fila.last}"
+    ultimo = fila.pop
+    primeiro = fila.shift
+
+    fila.push 35
+    fila.unshift 20
+
+    puts "Fila final: #{fila}"
+
+    carro = MinhaDeque(String).new
+    carro.push "fusca"
+    carro.unshift "corolla"
+
+    puts "Carros: #{carro}"
+end
