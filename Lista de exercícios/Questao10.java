@@ -9,8 +9,6 @@ public class Questao10 {
         int [] v1 = new int [10];
         int [] v2 = new int [10];
         int [] v3 = new int [20];
-        int contadorV1 = 0;
-        int contadorV2 = 0;
 
         for(int i=0; i<10;i++){
             System.out.println("Digite o "+(i+1)+"º valor do primeiro vetor: ");
@@ -22,14 +20,9 @@ public class Questao10 {
             v2[i] = scanner.nextInt();
         }
 
-        for (int i = 0; i < 20; i++) {
-            if(i%2==0){
-                v3[i]=v1[contadorV1];
-                contadorV1++;
-            } else {
-                v3[i]=v2[contadorV2];
-                contadorV2++;
-            }
+        for (int i = 0; i < 10; i++) {
+            v3[2*i] = v1[i];
+            v3[2*i+1] = v2[i];
         }
         System.out.println("Os valores intercalados são: \n");
         System.out.println(Arrays.toString(v3));
