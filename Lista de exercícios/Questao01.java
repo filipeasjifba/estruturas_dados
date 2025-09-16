@@ -2,7 +2,7 @@
 
 import java.util.Scanner;
 
-public class Questao1{
+public class Questao01{
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int[] v = new int[5];
@@ -19,4 +19,5 @@ public class Questao1{
         }
         scanner.close();
     }
+
 }
