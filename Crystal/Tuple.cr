@@ -1,24 +1,34 @@
 # A tupla já é nativa do Crystal
 
 class Main
-    vitoria_da_conquista = {-14.8648, -40.8369}
-    anage = {"-14.5995", "-41.1337"}
-    barra_do_choça ={-14.8641,-40.5591}
-    planalto = {-14.6604, -40.4789}
+    cidade = {"Vitória da Conquista", -14.8648, -40.8369, 340000, "https://desciclopedia.org/wiki/Vit%C3%B3ria_da_Conquista"}
+    loop do
+        puts "\n-----INFORMAÇÕES DA CIDADE-----"
+        puts "1 - Ver nome da cidade (first ou [0])"
+        puts "2 - Ver coordenadas ([1][2])"
+        puts "3 - Ver população ([3])"
+        puts "4 - Descobrir mais da cidade (last ou [4])😏"
+        puts "5 - Quantos dados tem a tupla (size)"
+        puts "0 - sair"
+        print "Escolha uma opção: "
+        opcao = gets.to_s.chomp
 
-    puts "-----Localizações-----"
-    puts "Vitória da Conquista: latitude #{vitoria_da_conquista[0]}, longitude #{vitoria_da_conquista[1]}"
-    puts "Anagé: latitude #{anage[0]}, longitude #{anage[1]}"
-    puts "Barra do choça: latitude #{barra_do_choça[0]}, longitude #{barra_do_choça[1]}"
-    puts "Planalto: latitude #{planalto[0]}, longitude #{planalto[1]}"
-    
-    acesso = {"user", "user123"}
-    puts "\n------Acesso a dados para API----------"
-    puts "> Usuário: #{acesso[0]}"    
-    puts "> Senha: #{acesso[1]}"
-    puts "Acesso concedido"
-    
-    # usando tupla nomeada
-    dados_climáticos = {city: "Vitória da Conquista", temperatura: 29.9, umidade: 70, velocidade_vento: 15.2}
-    puts "Condição do tempo em #{dados_climáticos[:city]}: \ntemperatura: #{dados_climáticos[:temperatura]}\numidade: #{dados_climáticos[:umidade]}\nvelocidade do vento: #{dados_climáticos[:velocidade_vento]}"
+        case opcao
+        when "1"
+            puts "Nome da cidade: #{cidade.first}"
+        when "2"
+            puts "Coordenadas: latitude #{cidade[1]}, longitude #{cidade[2]}"
+        when "3"
+            puts "População: #{cidade[3]} habitantes"
+        when "4"
+            puts "Acesse: #{cidade.last}"
+        when "5"
+            puts "A tupla tem #{cidade.size} dados"
+        when "0"
+            puts "Fechando o programa.."
+            break
+        else
+            puts "Opção inválida, papai"
+        end
+    end
 end
