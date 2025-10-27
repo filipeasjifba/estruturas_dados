@@ -1,4 +1,4 @@
-public class Stack {
+public class Stack implements Stackable {
     private Object[] elementos;
     private int topo;
     private int capacidade;
@@ -54,5 +54,4 @@ public class Stack {
             stack.pop();
         }
     }
-
 }
