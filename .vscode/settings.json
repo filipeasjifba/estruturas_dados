@@ -1,0 +1,13 @@
+{
+    "java.project.sourcePaths": [
+        "unidade_2/sort_algorithms/GnomeSort",
+        "unidade_2/sort_algorithms",
+        "Lista de exercícios/Lista1",
+        "Lista de exercícios",
+        "II Unidade/Algorítmos de ordenação/GnomeSort",
+        "I Unidade/Lista de exercícios/Lista1",
+        "I Unidade/Lista de exercícios",
+        "I Unidade/Estruturas em java",
+        "unidade_2/DoubleNode/demo/src/main/java/com/example/sort_algorithms"
+    ]
+}
