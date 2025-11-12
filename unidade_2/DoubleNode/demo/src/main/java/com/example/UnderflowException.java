@@ -1,3 +1,5 @@
+package com.example;
+
 /**
  * Interface importada do GitHub do professor Cláudio Rodolfo
  * 

@@ -1,3 +1,5 @@
+package com.example.sort_algorithms;
+
 import java.util.Random;
 
 public class GnomeSort {

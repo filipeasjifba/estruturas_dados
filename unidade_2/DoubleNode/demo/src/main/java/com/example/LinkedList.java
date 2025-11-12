@@ -1,172 +1,162 @@
+package com.example;
+
 // Aluno: Filipe Alves Sousa Julio
-public class LinkedList {
+public class LinkedList<T> {
     private DoubleNode<T> head;
     private DoubleNode<T> tail;
-    int capacity;
-    int amount;
-    
-    public LinkedList(){
+    private int capacity;
+    private int amount;
+
+    public LinkedList() {
         this(10);
     }
-    
-    public LinkedList(int capacity){
-        head = null;
-        tail = null;
+
+    public LinkedList(int capacity) {
+        this.head = null;
+        this.tail = null;
         this.capacity = capacity;
-        amount = 0;
+        this.amount = 0;
     }
-    
-    @Override
-    public int size(){
+
+    public int size() {
         return amount;
     }
-    
-    @Override
-    public isEmpty(){
+
+    public boolean isEmpty() {
         return amount == 0;
     }
-    
-    
-    @Override
-    public isFull(){
+
+    public boolean isFull() {
         return amount == capacity;
     }
-    
-    @Override
-    public String print(){
-        String print = "";
+
+    public String print() {
+        String result = "";
         DoubleNode<T> aux = head;
-        for (int i = 0; i < amount; i++){
+        for (int i = 0; i < amount; i++) {
             result += aux.getData();
-            if( i != amount - 1 ){
-                result +=", "
+            if (i != amount - 1) {
+                result += ", ";
             }
             aux = aux.getNext();
         }
-        
         return "[" + result + "]";
     }
-    
-    @Override
-    public void clear(){
+
+    public void clear() {
         head = null;
         tail = null;
         amount = 0;
     }
-    
-    @Override
-    public T[] selectAll(){
+
+    @SuppressWarnings("unchecked")
+    public T[] selectAll() {
         T[] temp = (T[]) new Object[size()];
         DoubleNode<T> aux = head;
-        for (int i = 0; i < amount; i++){
+        for (int i = 0; i < amount; i++) {
             temp[i] = aux.getData();
             aux = aux.getNext();
         }
         return temp;
     }
-    
-    @Override
+
     public void append(T data) {
-        if (isFull){
-            throw new OverflowException ("Lista cheia")
+        if (isFull()) {
+            throw new RuntimeException("Lista cheia");
         }
-        DoubleNode<T> newData = new DoubleNode<>();
-        if (!isEmpty){
+        DoubleNode<T> newData = new DoubleNode<>(data);
+        if (!isEmpty()) {
             tail.setNext(newData);
+            newData.setPrevious(tail);
+            tail = newData;
+        } else {
+            head = tail = newData;
         }
-        else {
-            head = newData;
-        }
-        newData.setPrevious(tail);    
-        tail = tail.getNext();
         amount++;
     }
 
-    @Override
-    public void update (int index, T data){
-        if(isEmpty()){
-            throw new UnderFlowException("Fila vazia");
+    public void update(int index, T data) {
+        if (isEmpty()) {
+            throw new RuntimeException("Fila vazia");
         }
-        if(){
-            throw new indexOutofBoundException("Índice inválido")
+        if (index < 0 || index >= amount) {
+            throw new IndexOutOfBoundsException("Índice inválido");
         }
-        
-        // Aluno: Filipe Alves Sousa Julio
 
-        DoubleNode<T> aux = null;
-        if(index > amount/2){
+        DoubleNode<T> aux;
+        if (index > amount / 2) {
             aux = tail;
-            for (int i = 0; i < amount - 1 - index; i++){
+            for (int i = amount - 1; i > index; i--) {
                 aux = aux.getPrevious();
             }
         } else {
             aux = head;
-            for (int i = 0; i < amount; i++){
+            for (int i = 0; i < index; i++) {
                 aux = aux.getNext();
             }
         }
-        aux.setData(data)
-    }
-    
-    @Override
-    public T select (int index){
-        if(isEmpty()){
-            throw new UnderFlowException("Fila vazia");
-        }
-        if(){
-            throw new indexOutofBoundException("Índice inválido")
-        }
-        
-        DoubleNode<T> aux = null;
-        if(index > amount/2){
-            aux = tail;
-            for (int i = 0; i < amount - 1 - index; i++){
-                aux = aux.getPrevious();
-            }
-        } else {
-            aux = head;
-            for (int i = 0; i < amount; i++){
-                aux = aux.getNext();
-            }
-        }
-        T data = aux.getData();
-        return aux;
+        aux.setData(data);
     }
 
-    @Override
-    public void delete (int index){
-        if(isEmpty()){
-            throw new UnderFlowException("Fila vazia");
+    public T select(int index) {
+        if (isEmpty()) {
+            throw new RuntimeException("Fila vazia");
         }
-        if(){
-            throw new indexOutofBoundException("Índice inválido")
+        if (index < 0 || index >= amount) {
+            throw new IndexOutOfBoundsException("Índice inválido");
         }
-        DoubleNode<T> aux = null;
-        if(index > amount/2){
+
+        DoubleNode<T> aux;
+        if (index > amount / 2) {
             aux = tail;
-            for (int i = 0; i < amount - 1 - index; i++){
+            for (int i = amount - 1; i > index; i--) {
                 aux = aux.getPrevious();
             }
         } else {
             aux = head;
-            for (int i = 0; i < amount; i++){
+            for (int i = 0; i < index; i++) {
                 aux = aux.getNext();
             }
         }
+        return aux.getData();
+    }
+
+    public void delete(int index) {
+        if (isEmpty()) {
+            throw new RuntimeException("Fila vazia");
+        }
+        if (index < 0 || index >= amount) {
+            throw new IndexOutOfBoundsException("Índice inválido");
+        }
+
+        DoubleNode<T> aux;
+        if (index > amount / 2) {
+            aux = tail;
+            for (int i = amount - 1; i > index; i--) {
+                aux = aux.getPrevious();
+            }
+        } else {
+            aux = head;
+            for (int i = 0; i < index; i++) {
+                aux = aux.getNext();
+            }
+        }
+
         DoubleNode<T> anterior = aux.getPrevious();
-        DoubleNode<T> próximo = aux.getNext();
-        //tratamento head
-        if(anterior != null){
+        DoubleNode<T> proximo = aux.getNext();
+
+        if (anterior != null) {
             anterior.setNext(proximo);
         } else {
-            head = head.getNext();
+            head = proximo;
         }
-        //tratamento tail
-        if(proximo != null){
+
+        if (proximo != null) {
             proximo.setPrevious(anterior);
         } else {
-            tail = tail.getPrevious();
+            tail = anterior;
         }
+
         amount--;
     }
 }

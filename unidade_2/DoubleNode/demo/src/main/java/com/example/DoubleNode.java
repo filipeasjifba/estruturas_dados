@@ -6,6 +6,8 @@ public class DoubleNode<T>{
     private DoubleNode<T> next;
     private DoubleNode<T> previous;
 
+    public DoubleNode(T data2) {
+    }
     public T getData() {
         return data;
     }
