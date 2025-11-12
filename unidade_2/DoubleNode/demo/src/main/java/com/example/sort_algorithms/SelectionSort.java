@@ -1,3 +1,4 @@
+package com.example.sort_algorithms;
 // Aluno: Filipe Alves Sousa Julio
 
 public class SelectionSort {
