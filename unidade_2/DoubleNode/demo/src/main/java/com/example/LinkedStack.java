@@ -77,4 +77,8 @@ public class LinkedStack<T> implements Stackable<T> {
         result.append("]");
         return result.toString();
     }
+
+    public int size(){
+        return numberElements;
+    }
 }

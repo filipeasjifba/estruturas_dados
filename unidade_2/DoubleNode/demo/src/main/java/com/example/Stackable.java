@@ -10,4 +10,6 @@ public interface Stackable<T> {
     boolean isEmpty();
     boolean isFull();
     String print();
+
+    public int size();
 }
