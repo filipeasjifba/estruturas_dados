@@ -81,4 +81,8 @@ public class LinkedStack<T> implements Stackable<T> {
     public int size(){
         return numberElements;
     }
+
+    public int getMaxCapacity(){
+        return maxElements;
+    }
 }

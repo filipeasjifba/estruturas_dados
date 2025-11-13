@@ -12,4 +12,6 @@ public interface Stackable<T> {
     String print();
 
     public int size();
+
+    public int getMaxCapacity();
 }

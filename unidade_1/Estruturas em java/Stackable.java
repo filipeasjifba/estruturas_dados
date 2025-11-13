@@ -4,4 +4,5 @@ public interface Stackable {
     Object pop();
     boolean isEmpty();
     int size();
+    int getMaxCapacity();
 }
