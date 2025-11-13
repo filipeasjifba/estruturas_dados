@@ -1,16 +1,15 @@
 package com.example.Atividade_GitHub;
 
-import com.example.Stackable;
-
+import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Locale;
 import java.util.NoSuchElementException;
 
 import com.example.LinkedStack;
+import com.example.Stackable;
 
 public class CarDAOLinkedStack implements CarDAO {
 
-    private Stackable<Car> cars = new LinkedStack<>(20);
+    private final Stackable<Car> cars = new LinkedStack<>(20);
 
     // Operações básicas CRUD
     @Override
@@ -32,10 +31,11 @@ public class CarDAOLinkedStack implements CarDAO {
 
         while (!cars.isEmpty()){
             Car current = cars.pop();
+            temp.push(current);
             if (current.getLicensePlate().equalsIgnoreCase(plateLicense)){
                 foundCar = current;
+                break;
             }
-            temp.push(current);
         }
 
         while (!temp.isEmpty()){
@@ -520,7 +520,26 @@ public class CarDAOLinkedStack implements CarDAO {
     // Operações de gerenciamento
     @Override
     public boolean isCarInPlaced(String plateLicense) {
-        throw new UnsupportedOperationException("Operação ainda não implementada");
+        if (cars.isEmpty()){
+            throw new NoSuchElementException("A pilha de carros está vazia");
+        }
+        LinkedStack<Car> temp = new LinkedStack<>(20);
+        boolean found = false;
+
+        while (!cars.isEmpty()){
+            Car current = cars.pop();
+            temp.push(current);
+            if(current.getLicensePlate().equalsIgnoreCase(plateLicense)){
+                found = true;
+                break;
+            }
+        }
+
+        while (!temp.isEmpty()){
+            cars.push(temp.pop());
+        }
+
+        return found;
     }
 
     @Override
@@ -532,56 +551,187 @@ public class CarDAOLinkedStack implements CarDAO {
 
     @Override
     public void removeCarsOlderThan(LocalDateTime date) {
-        throw new UnsupportedOperationException("Operação ainda não implementada");
+        if (cars.isEmpty()){
+            throw new NoSuchElementException("A pilha de carros está vazia");
+        }
+        LinkedStack<Car> temp = new LinkedStack<>(20);
+
+        while (!cars.isEmpty()){
+            Car current = cars.pop();
+            if(current.getArrived().isAfter(date)){
+                temp.push(current);
+            }
+        }
+
+        while (!temp.isEmpty()){
+            cars.push(temp.pop());
+        }
     }
 
     @Override
     public Car[] getCarsByParkingDuration(long minHours, long maxHours) {
-        throw new UnsupportedOperationException("Operação ainda não implementada");
+        if (cars.isEmpty()){
+            throw new NoSuchElementException("A pilha de carros está vazia");
+        }
+        LinkedStack<Car> temp = new LinkedStack<>(20);
+        int count = 0;
+        
+        while(!cars.isEmpty()){
+            Car current = cars.pop();
+            temp.push(current);
+            long duration = Duration.between(current.getArrived(), LocalDateTime.now()).toHours();
+            if (duration>= minHours && duration<=maxHours){
+                count++;
+            }
+        }
+
+        Car[] carrosPorDuracao = new Car[count];
+        int index = 0;
+
+        while (!temp.isEmpty()){
+            Car current = temp.pop();
+            cars.push(current);
+            long duration = Duration.between(current.getArrived(), LocalDateTime.now()).toHours();
+            if (duration>= minHours && duration<=maxHours){
+                carrosPorDuracao[index++] = current;
+            }
+        }
+
+        return carrosPorDuracao;
     }
 
     @Override
     public int getAvailableSpaces() {
-        throw new UnsupportedOperationException("Operação ainda não implementada");
+        if (cars.isFull()){
+            return 0;
+        }
+        return cars.getMaxCapacity() - cars.size();
     }
 
     @Override
     public boolean isParkingEmpty() {
-        throw new UnsupportedOperationException("Operação ainda não implementada");
+        return cars.isEmpty();
     }
 
     @Override
     public int getMaxCapacity() {
-        throw new UnsupportedOperationException("Operação ainda não implementada");
+        return cars.getMaxCapacity();
     }
 
     @Override
     public int getOccupancyRate() {
-        throw new UnsupportedOperationException("Operação ainda não implementada");
+        if(cars.isEmpty()){
+            return 0;
+        }
+        int rate = (int) ((double) cars.size() / cars.getMaxCapacity() *100);
+        return rate;
     }
 
     @Override
     public boolean isParkingFull() {
-        throw new UnsupportedOperationException("Operação ainda não implementada");
+        return cars.isFull();
     }
 
     @Override
     public long getParkingDuration(String plateLicense) {
-        throw new UnsupportedOperationException("Operação ainda não implementada");
+        if (cars.isEmpty()) {
+            throw new NoSuchElementException("Pilha de carros vazia");
+        }
+
+        LinkedStack<Car> temp = new LinkedStack<>(20);
+        Long duration = null;
+
+        while (!cars.isEmpty()) {
+            Car current = cars.pop();
+            temp.push(current);
+            if (current.getLicensePlate().equalsIgnoreCase(plateLicense)) {
+                duration = Duration.between(current.getArrived(), LocalDateTime.now()).toHours();
+                break;
+            }
+        }
+
+        while (!temp.isEmpty()) {
+            cars.push(temp.pop());
+        }
+
+        if (duration == null) {
+            throw new NoSuchElementException("Carro não encontrado");
+        }
+
+        return duration;
     }
+
 
     @Override
     public void removeCarsByOwner(String owner) {
-        throw new UnsupportedOperationException("Operação ainda não implementada");
+        if (cars.isEmpty()) {
+            throw new NoSuchElementException("Pilha de carros vazia");
+        }
+        LinkedStack<Car> temp = new LinkedStack<>(20);
+
+        while (!cars.isEmpty()){
+            Car current = cars.pop();
+            if(!current.getOwnerName().equalsIgnoreCase(owner)){
+                temp.push(current);
+            }
+        }
+
+        while (!temp.isEmpty()){
+            cars.push(temp.pop());
+        }
     }
 
     @Override
     public long getAverageArrivalTime() {
-        throw new UnsupportedOperationException("Operação ainda não implementada");
+        if (cars.isEmpty()){
+            throw new NoSuchElementException("A pilha de carros está vazia");
+        }
+        LinkedStack<Car> temp = new LinkedStack<>(20);
+        long somaHoras = 0;
+        int count = 0;
+
+        while(!cars.isEmpty()){
+            Car current = cars.pop();   
+            temp.push(current);
+            somaHoras += Duration.between(current.getArrived(), LocalDateTime.now()).toHours();
+        }
+
+        while (!temp.isEmpty()){
+            cars.push(temp.pop());
+        }
+
+        return somaHoras/count;
     }
 
     @Override
     public Car[] getCarsWithLongParking(long thresholdHours) {
-        throw new UnsupportedOperationException("Operação ainda não implementada");
+        if (cars.isEmpty()) {
+            throw new NoSuchElementException("Pilha de carros vazia");
+        }
+        LinkedStack<Car> temp = new LinkedStack<>(20);
+        int count =  0;
+
+        while (!cars.isEmpty()){
+            Car current = cars.pop();
+            temp.push(current);
+            long duration = Duration.between(current.getArrived(), LocalDateTime.now()).toHours();
+            if(duration>thresholdHours){
+                count++;
+            }
+        }
+
+        Car[] carrosTempoExpirado = new Car[count];
+        int index =0;
+
+        while (!temp.isEmpty()){
+            Car current = cars.pop();
+            cars.push(current);
+            long duration = Duration.between(current.getArrived(), LocalDateTime.now()).toHours();
+            if(duration>thresholdHours){
+                carrosTempoExpirado[index++] = current;
+            }
+        }
+
+        return carrosTempoExpirado;
     }
 }
