@@ -15,4 +15,5 @@ public interface DEQueable<T> {
     boolean isFull();
     String print();
     String printEndToBegin();
+    int amount();
 }
