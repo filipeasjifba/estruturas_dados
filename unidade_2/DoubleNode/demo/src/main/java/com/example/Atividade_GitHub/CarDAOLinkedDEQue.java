@@ -1,5 +1,6 @@
 package com.example.Atividade_GitHub;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 
@@ -331,22 +332,148 @@ public class CarDAOLinkedDEQue implements CarDAO {
 
     @Override
     public int getTotalCars() {
-        return cars.amount();
+        return cars.getAmount();
     }
 
     @Override
     public String getMostPopularMark() {
-        throw new UnsupportedOperationException("Operação ainda não implementada");
+        if (cars.isEmpty()) {
+            throw new NoSuchElementException("Fila vazia");
+        }
+
+        LinkedDeque<Car> temp = new LinkedDeque<>();
+        String[] marks = new String[50];
+        int[] counts = new int[50];
+        int distinct = 0;
+
+        while (!cars.isEmpty()) {
+            Car current = cars.dequeue();
+            temp.enqueue(current);
+
+            String currentMark = current.getMark();
+            boolean found = false;
+
+            for (int i = 0; i < distinct; i++) {
+                if (marks[i].equalsIgnoreCase(currentMark)) {
+                    counts[i]++;
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                marks[distinct] = currentMark;
+                counts[distinct] = 1;
+                distinct++;
+            }
+        }
+
+        while (!temp.isEmpty()) {
+            cars.enqueue(temp.dequeue());
+        }
+
+        int maxIndex = 0;
+        for (int i = 1; i < distinct; i++) {
+            if (counts[i] > counts[maxIndex]) {
+                maxIndex = i;
+            }
+        }
+
+        return marks[maxIndex];
     }
 
     @Override
     public String getMostPopularModel() {
-        throw new UnsupportedOperationException("Operação ainda não implementada");
+        if (cars.isEmpty()) {
+            throw new NoSuchElementException("Fila vazia");
+        }
+
+        LinkedDeque<Car> temp = new LinkedDeque<>();
+        String[] models = new String[50];
+        int[] counts = new int[50];
+        int distinct = 0;
+
+        while (!cars.isEmpty()) {
+            Car current = cars.dequeue();
+            temp.enqueue(current);
+
+            String model = current.getModel();
+            boolean found = false;
+
+            for (int i = 0; i < distinct; i++) {
+                if (models[i].equalsIgnoreCase(model)) {
+                    counts[i]++;
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                models[distinct] = model;
+                counts[distinct] = 1;
+                distinct++;
+            }
+        }
+
+        while (!temp.isEmpty()) {
+            cars.enqueue(temp.dequeue());
+        }
+
+        int maxIndex = 0;
+        for (int i = 1; i < distinct; i++) {
+            if (counts[i] > counts[maxIndex]) {
+                maxIndex = i;
+            }
+        }
+
+        return models[maxIndex];
     }
+
 
     @Override
     public String getMostPopularColor() {
-        throw new UnsupportedOperationException("Operação ainda não implementada");
+        if (cars.isEmpty()) {
+            throw new NoSuchElementException("Fila vazia");
+        }
+
+        LinkedDeque<Car> temp = new LinkedDeque<>();
+        String[] colors = new String[50];
+        int[] counts = new int[50];
+        int distinct = 0;
+
+        while (!cars.isEmpty()) {
+            Car current = cars.dequeue();
+            temp.enqueue(current);
+            String color = current.getColor();
+            boolean found = false;
+
+            for (int i = 0; i < distinct; i++) {
+                if (colors[i].equalsIgnoreCase(color)) {
+                    counts[i]++;
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                colors[distinct] = color;
+                counts[distinct] = 1;
+                distinct++;
+            }
+        }
+
+        while (!temp.isEmpty()) {
+            cars.enqueue(temp.dequeue());
+        }
+
+        int maxIndex = 0;
+        for (int i = 1; i < distinct; i++) {
+            if (counts[i] > counts[maxIndex]) {
+                maxIndex = i;
+            }
+        }
+
+        return colors[maxIndex];
     }
 
     // Operações de gerenciamento
@@ -398,52 +525,148 @@ public class CarDAOLinkedDEQue implements CarDAO {
 
     @Override
     public Car[] getCarsByParkingDuration(long minHours, long maxHours) {
-        throw new UnsupportedOperationException("Operação ainda não implementada");
+        LinkedDeque<Car> temp = new LinkedDeque<>();
+        int count = 0;
+
+        while(!cars.isEmpty()){
+            Car current = cars.dequeue();
+            temp.enqueue(current);
+            long duration = Duration.between(current.getArrived(), LocalDateTime.now()).toHours();
+            if(duration>= minHours && duration<=maxHours){
+                count++;
+            }
+        }
+
+        Car[] carrosIntervalo = new Car[count];
+        int index =0 ;
+
+        while(!temp.isEmpty()){
+            Car current = temp.dequeue();
+            cars.enqueue(current);
+            long duration = Duration.between(current.getArrived(), LocalDateTime.now()).toHours();
+            if(duration>=minHours && duration<=maxHours){
+                carrosIntervalo[index++] = current;
+            }
+        }
+
+        return carrosIntervalo;
     }
 
     @Override
     public int getAvailableSpaces() {
-        throw new UnsupportedOperationException("Operação ainda não implementada");
+        return cars.getLength() - cars.getAmount();
     }
 
     @Override
     public boolean isParkingEmpty() {
-        throw new UnsupportedOperationException("Operação ainda não implementada");
+        return cars.isEmpty();
     }
 
     @Override
     public int getMaxCapacity() {
-        throw new UnsupportedOperationException("Operação ainda não implementada");
+        return cars.getLength();
     }
 
     @Override
     public int getOccupancyRate() {
-        throw new UnsupportedOperationException("Operação ainda não implementada");
+        if (cars.isEmpty()){
+            return 0;
+        }
+        return (cars.getAmount() * 100) / cars.getLength();
     }
 
     @Override
     public boolean isParkingFull() {
-        throw new UnsupportedOperationException("Operação ainda não implementada");
+        return cars.isFull();
     }
 
     @Override
     public long getParkingDuration(String plateLicense) {
-        throw new UnsupportedOperationException("Operação ainda não implementada");
+        LinkedDeque<Car> temp = new LinkedDeque<>();
+        Car foundCar = null;
+
+        while(!cars.isEmpty()){
+            Car current = cars.dequeue();
+            temp.enqueue(current);
+            if (current.getLicensePlate().equalsIgnoreCase(plateLicense)){
+                foundCar = current;
+            }
+        }
+
+        while(!temp.isEmpty()){
+            cars.enqueue(temp.dequeue());
+        }
+
+        if(foundCar == null){
+            throw new NoSuchElementException("Carro com placa " + plateLicense + " não encontrado");
+        }
+
+        return Duration.between(foundCar.getArrived(), LocalDateTime.now()).toHours();
     }
 
     @Override
     public void removeCarsByOwner(String owner) {
-        throw new UnsupportedOperationException("Operação ainda não implementada");
+        LinkedDeque<Car> temp = new LinkedDeque<>();
+
+        while(!cars.isEmpty()){
+            Car current = cars.dequeue();
+            if (!current.getOwnerName().equalsIgnoreCase(owner)){
+                temp.enqueue(current);
+            }
+        }
+
+        while (!temp.isEmpty()){
+            cars.enqueue(temp.dequeue());
+        }
     }
 
     @Override
     public long getAverageArrivalTime() {
-        throw new UnsupportedOperationException("Operação ainda não implementada");
+        if (cars.isEmpty()){
+            throw new NoSuchElementException("Fila de carros vazia");
+        }
+        LinkedDeque<Car> temp = new LinkedDeque<>();
+        int soma = 0;
+        while(!cars.isEmpty()){
+            Car current = cars.dequeue();
+            temp.enqueue(current);
+            soma += current.getArrived().getHour();
+        }
+
+        while(!temp.isEmpty()){
+            cars.enqueue(temp.dequeue());
+        }
+
+        return soma/cars.getAmount();
     }
 
     @Override
     public Car[] getCarsWithLongParking(long thresholdHours) {
-        throw new UnsupportedOperationException("Operação ainda não implementada");
+        LinkedDeque<Car> temp = new LinkedDeque<>();
+        int count = 0;
+
+        while(!cars.isEmpty()){
+            Car current = cars.dequeue();
+            temp.enqueue(current);
+            long duration = Duration.between(current.getArrived(), LocalDateTime.now()).toHours();
+            if( duration > thresholdHours){
+                count ++;
+            }
+        }
+
+        Car[] carros = new Car[count];
+        int index = 0;
+
+        while(!temp.isEmpty()){
+            Car current = temp.dequeue();
+            cars.enqueue(current);
+            long duration = Duration.between(current.getArrived(), LocalDateTime.now()).toHours();
+            if( duration > thresholdHours){
+                carros[index++] = current;
+            }
+        }
+
+        return carros;
     }
 
     public DEQueable<Car> getCars() {

@@ -689,19 +689,18 @@ public class CarDAOLinkedStack implements CarDAO {
         }
         LinkedStack<Car> temp = new LinkedStack<>(20);
         long somaHoras = 0;
-        int count = 0;
 
         while(!cars.isEmpty()){
             Car current = cars.pop();   
             temp.push(current);
-            somaHoras += Duration.between(current.getArrived(), LocalDateTime.now()).toHours();
+            somaHoras += current.getArrived().getHour();
         }
 
         while (!temp.isEmpty()){
             cars.push(temp.pop());
         }
 
-        return somaHoras/count;
+        return (somaHoras)/(cars.size());
     }
 
     @Override

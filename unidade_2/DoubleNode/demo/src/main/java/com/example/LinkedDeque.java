@@ -247,7 +247,11 @@ public class LinkedDeque<T> implements DEQueable<T> {
 	}
 
     @Override
-    public int amount() {
+    public int getAmount() {
         return amount;
     }
+
+	public int getLength(){
+		return length;
+	}
 }

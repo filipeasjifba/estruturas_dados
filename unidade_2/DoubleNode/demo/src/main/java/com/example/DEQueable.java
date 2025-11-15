@@ -1,6 +1,7 @@
 package com.example;
 
 public interface DEQueable<T> {
+
     void beginEnqueue(T data);  //C
     void enqueue(T data);       //C
     T front();                  //R
@@ -15,5 +16,6 @@ public interface DEQueable<T> {
     boolean isFull();
     String print();
     String printEndToBegin();
-    int amount();
+    int getAmount();
+    int getLength();
 }
