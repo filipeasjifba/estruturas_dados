@@ -63,7 +63,7 @@ public class LinkedList<T> {
     public void append(T data) {
         if (isFull()) {
             throw new RuntimeException("Lista cheia");
-        }
+        }   
         DoubleNode<T> newData = new DoubleNode<>(data);
         if (!isEmpty()) {
             tail.setNext(newData);
@@ -100,7 +100,7 @@ public class LinkedList<T> {
 
     public T select(int index) {
         if (isEmpty()) {
-            throw new RuntimeException("Fila vazia");
+            throw new RuntimeException("Lista vazia");
         }
         if (index < 0 || index >= amount) {
             throw new IndexOutOfBoundsException("Índice inválido");
@@ -158,6 +158,10 @@ public class LinkedList<T> {
         }
 
         amount--;
+    }
+
+    public int getMaxCapacity(){
+        return capacity;
     }
 }
 // Aluno: Filipe Alves Sousa Julio

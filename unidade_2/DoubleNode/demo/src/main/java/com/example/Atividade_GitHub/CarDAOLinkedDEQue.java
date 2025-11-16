@@ -335,52 +335,52 @@ public class CarDAOLinkedDEQue implements CarDAO {
         return cars.getAmount();
     }
 
-    @Override
-    public String getMostPopularMark() {
-        if (cars.isEmpty()) {
-            throw new NoSuchElementException("Fila vazia");
-        }
-
-        LinkedDeque<Car> temp = new LinkedDeque<>();
-        String[] marks = new String[50];
-        int[] counts = new int[50];
-        int distinct = 0;
-
-        while (!cars.isEmpty()) {
-            Car current = cars.dequeue();
-            temp.enqueue(current);
-
-            String currentMark = current.getMark();
-            boolean found = false;
-
-            for (int i = 0; i < distinct; i++) {
-                if (marks[i].equalsIgnoreCase(currentMark)) {
-                    counts[i]++;
-                    found = true;
-                    break;
-                }
-            }
-
-            if (!found) {
-                marks[distinct] = currentMark;
-                counts[distinct] = 1;
-                distinct++;
-            }
-        }
-
-        while (!temp.isEmpty()) {
-            cars.enqueue(temp.dequeue());
-        }
-
-        int maxIndex = 0;
-        for (int i = 1; i < distinct; i++) {
-            if (counts[i] > counts[maxIndex]) {
-                maxIndex = i;
-            }
-        }
-
-        return marks[maxIndex];
+@Override
+public String getMostPopularMark() {
+    if (cars.isEmpty()) {
+        throw new NoSuchElementException("Fila vazia");
     }
+
+    LinkedDeque<Car> temp = new LinkedDeque<>();
+    String[] marks = new String[50];
+    int[] counts = new int[50];
+    int distinct = 0;
+
+    while (!cars.isEmpty()) {
+        Car current = cars.dequeue();
+        temp.enqueue(current);
+
+        String currentMark = current.getMark();
+        boolean found = false;
+
+        for (int i = 0; i < distinct; i++) {
+            if (marks[i].equalsIgnoreCase(currentMark)) {
+                counts[i]++;
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            marks[distinct] = currentMark;
+            counts[distinct] = 1;
+            distinct++;
+        }
+    }
+
+    while (!temp.isEmpty()) {
+        cars.enqueue(temp.dequeue());
+    }
+
+    int maxIndex = 0;
+    for (int i = 1; i < distinct; i++) {
+        if (counts[i] > counts[maxIndex]) {
+            maxIndex = i;
+        }
+    }
+
+    return marks[maxIndex];
+}
 
     @Override
     public String getMostPopularModel() {
